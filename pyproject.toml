@@ -4,14 +4,14 @@ build-backend = "setuptools.build_meta"
 
 
 [project]
-name = "filestore_jex"
-version = "0.1.0"
-description = "guagua自由文件存储库"
+name = "filestore_guagua"
+version = "0.1.1"
+description = "guagua自用文件存储库"
 readme = "README.md"
 requires-python = ">=3.9"
 license = { file = "LICENSE" }
 keywords = ["jex", "files" ,'python']
-authors = [{ name = "A. Random Developer", email = "author@example.com" }]
+authors = [{ name = "guagua", email = "guagua1053@gmail.com" }]
 maintainers = [
   { name = "jex.huang", email = "guagua1053@gmail.com" },
 ]
@@ -19,7 +19,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
 ]
-dependencies = ["peppercorn"]
+dependencies = []
 
 
 [project.optional-dependencies]

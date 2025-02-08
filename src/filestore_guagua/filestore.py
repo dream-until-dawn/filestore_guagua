@@ -15,8 +15,9 @@ class FileStore:
             fileName (str): 文件的完整路径,不需带后缀。
             data (dict): 字典对象。
         """
-        self.ensure_directories(f"{self.base_dir}/{fileName}.json")
-        with open(f"{self.base_dir}/{fileName}.json", "w", encoding="utf-8") as f:
+        self.ensure_directories(fileName)
+        file_path = os.path.join(self.base_dir, f"{fileName}.json")
+        with open(file_path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4)
 
     def readJSON(self, fileName: str) -> dict:
@@ -26,7 +27,8 @@ class FileStore:
         参数：
             fileName (str): 文件的完整路径,不需带后缀。
         """
-        with open(f"{self.base_dir}/{fileName}.json", "r", encoding="utf-8") as f:
+        file_path = os.path.join(self.base_dir, f"{fileName}.json")
+        with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
         return data
 
@@ -38,8 +40,9 @@ class FileStore:
             fileName (str): 文件的完整路径。
             save_data (any): 对象。
         """
-        self.ensure_directories(f"{self.base_dir}/{fileName}")
-        with open(f"{self.base_dir}/{fileName}", "wb") as fw:
+        self.ensure_directories(fileName)
+        file_path = os.path.join(self.base_dir, fileName)
+        with open(file_path, "wb") as fw:
             pickle.dump(save_data, fw)
 
     def openData(self, fileName: str) -> any:
@@ -50,23 +53,19 @@ class FileStore:
             fileName (str): 文件的完整路径。
         """
         try:
-            with open(f"{self.base_dir}/{fileName}", "rb") as fr:
+            file_path = os.path.join(self.base_dir, fileName)
+            with open(file_path, "rb") as fr:
                 return_Mat = pickle.load(fr)
             return return_Mat
         except:
             return []
 
+    @staticmethod
     def get_project_root() -> str:
         """
-        获取项目的根目录路径。
-        """
-        # 获取当前脚本文件的绝对路径
-        current_file_path = os.path.abspath(__file__)
-        # 获取当前脚本文件所在目录的路径
-        current_dir = os.path.dirname(current_file_path)
-        # 获取项目根目录的路径
-        project_root = os.path.dirname(current_dir)
-        return project_root
+        获取项目的执行目录
+        """ 
+        return os.getcwd()
 
     def exists_file(self, fileName) -> bool:
         """
@@ -75,7 +74,8 @@ class FileStore:
         参数：
             fileName (str): 文件的完整路径。
         """
-        return os.path.exists(f"{self.base_dir}/{fileName}")
+        file_path = os.path.join(self.base_dir, fileName)
+        return os.path.exists(file_path)
 
     def ensure_directories(self, fileName):
         """
@@ -85,7 +85,8 @@ class FileStore:
             fileName (str): 文件的完整路径。
         """
         # 获取文件所在的目录路径
-        directory = os.path.dirname(f"{self.base_dir}/{fileName}")
+        file_path = os.path.join(self.base_dir, fileName)
+        directory = os.path.dirname(file_path)
         # 检查目录是否存在
         if not os.path.exists(directory):
             # 如果目录不存在，创建所有中间目录
@@ -102,7 +103,7 @@ class FileStore:
         if len(fileNameList) != len(jsonDataList):
             raise ValueError("文件名列表和json数据列表长度不一致！")
         for file_index in range(len(fileNameList)):
-            file_path = f"{self.base_dir}/{fileNameList[file_index]}.json"
-            self.ensure_directories(file_path)
+            self.ensure_directories(f"{fileNameList[file_index]}.json")
+            file_path = os.path.join(self.base_dir, f"{fileNameList[file_index]}.json")
             with open(file_path, "w") as fw:
                 json.dump(jsonDataList[file_index], fw, indent=4)
